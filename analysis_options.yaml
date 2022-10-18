@@ -1,0 +1,5 @@
+include: package:zekfad_lints/untyped/dart.yaml
+
+linter:
+  rules:
+    close_sinks: false
