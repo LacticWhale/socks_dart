@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:socks_proxy/socks_client.dart';
+import 'package:socks5_proxy/socks_client.dart';
 
 void main() async {
 // Create HttpClient object

@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:socks_proxy/secure_compare.dart';
-import 'package:socks_proxy/socks_server.dart';
+import 'package:socks5_proxy/secure_compare.dart';
+import 'package:socks5_proxy/socks_server.dart';
 
 void main() {
   // Create server instance

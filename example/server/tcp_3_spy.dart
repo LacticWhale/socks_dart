@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:socks_proxy/socks_server.dart';
+import 'package:socks5_proxy/socks_server.dart';
 
 StreamTransformer<Uint8List, Uint8List> printer(String prefix) =>
     StreamTransformer<Uint8List, Uint8List>.fromHandlers(
