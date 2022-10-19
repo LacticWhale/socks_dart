@@ -11,6 +11,5 @@ dev_dependencies:
   test: ^1.16.0
   zekfad_lints: ^1.1.0
 dependencies: 
-  async: ^2.9.0
   meta: ^1.8.0
 
