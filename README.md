@@ -59,7 +59,7 @@ void main() {
     client.close();
 }
 ```
-See more usage at [example](/examples/) folder.
+See more usage at [example](./example/example.md) folder.
 
 ## License
 - MIT License

@@ -1,5 +1,5 @@
 name: socks5_proxy
-version: 1.0.1
+version: 1.0.2
 description: Socks5 server and client with ability to catch packet in both direction, chain proxies and more.
 repository: https://github.com/LacticWhale/socks_dart
 
