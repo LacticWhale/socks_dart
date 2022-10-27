@@ -9,11 +9,12 @@ void main() {
 
   // Listen to all tcp and udp connections
   proxy.connections.listen((connection) async {
+    print('${connection.address.address}:${connection.port} ==> ${connection.desiredAddress.address}:${connection.desiredPort}');
     // Apply default handler
     await connection.forward();
   }).onError(print);
 
   // Bind servers
-  unawaited(proxy.bind(InternetAddress.loopbackIPv4, 1080));
-  unawaited(proxy.bind(InternetAddress.loopbackIPv4, 1081));
+  unawaited(proxy.bind(InternetAddress.anyIPv4, 1080));
+  unawaited(proxy.bind(InternetAddress.anyIPv4, 1081));
 }

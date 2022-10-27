@@ -9,11 +9,11 @@ final client = HttpClient();
 
 // Assign connection factory
 SocksTCPClient.assignToHttpClient(client, [
-  ProxySettings(InternetAddress.loopbackIPv4, 1080),
+  ProxySettings(InternetAddress('95.216.93.71'), 1080),
 ]);
 
 // GET request
-final request = await client.getUrl(Uri.parse('https://example.com/'));
+final request = await client.getUrl(Uri.parse('http://example.com/'));
 final response = await request.close();
 // Print response
 print(await utf8.decodeStream(response));

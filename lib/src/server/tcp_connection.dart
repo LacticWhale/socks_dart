@@ -59,8 +59,18 @@ class TcpConnection extends SocksConnection implements Connection {
       return;
 
     // "Link" streams
-    addStream(target).ignore();
-    target.addStream(this).ignore();
+    unawaited(addStream(target)
+      ..then((value) {
+        print('Target disconnects');
+        close();
+        // target.close();  
+      }).catchError(() {}),);
+    unawaited(target.addStream(this)
+      ..then((value) {
+        print('Client disconnects.');
+        target.close();
+        // close();
+      }).catchError(() {}));
   }
 
   @override
@@ -82,9 +92,14 @@ class TcpConnection extends SocksConnection implements Connection {
     ]);
     await flush();
 
-
     // "Link" streams
-    addStream(client).ignore();
-    client.addStream(this).ignore();
+    unawaited(addStream(client)
+      ..then((value) {
+        close();  
+      }).catchError(() {}),);
+    unawaited(client.addStream(this)
+      ..then((value) {
+        client.close();
+      }).catchError(() {}));
   }
 }

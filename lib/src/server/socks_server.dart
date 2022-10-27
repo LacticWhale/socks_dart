@@ -28,9 +28,10 @@ class SocksServer {
       (client) async {
         SocksConnection? connection;
 
-        client.done.ignore();
 
         connection = SocksConnection(client, authHandler);
+
+        client.done.ignore();
 
         await connection.initialize();
         try {
