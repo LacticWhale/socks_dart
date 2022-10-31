@@ -1,3 +1,7 @@
+## 1.0.3+dev.3
+
+- Fix typo in logic of allowIPv6.
+
 ## 1.0.3+dev.2
 
 - AllowIPv6 argument for accept and forward methods.

@@ -11,7 +11,7 @@ void main() {
   proxy.connections.listen((connection) async {
     print('${connection.address.address}:${connection.port} ==> ${connection.desiredAddress.address}:${connection.desiredPort}');
     // Apply default handler
-    await connection.forward();
+    await connection.forward(allowIPv6: false);
   }).onError(print);
 
   // Bind servers

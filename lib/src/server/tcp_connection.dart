@@ -26,7 +26,7 @@ class TcpConnection extends SocksConnection implements Connection {
     final _allowIPv6 = allowIPv6 ?? false;
 
     if (_connect == true) {
-      if(_allowIPv6 == false) {
+      if(_allowIPv6 == false && desiredAddress.type == InternetAddressType.IPv6) {
         add([
           0x05,
           CommandReplyCode.unsupportedAddressType.byte,
@@ -109,10 +109,10 @@ class TcpConnection extends SocksConnection implements Connection {
     unawaited(addStream(client)
       ..then((value) {
         close();  
-      }).catchError(() {}),);
+      }).ignore(),);
     unawaited(client.addStream(this)
       ..then((value) {
         client.close();
-      }).catchError(() {}));
+      }).ignore(),);
   }
 }
