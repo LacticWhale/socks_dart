@@ -1,3 +1,7 @@
+## 1.0.3+dev.2
+
+- AllowIPv6 argument for accept and forward methods.
+
 ## 1.0.3+dev.1
 
 - Fixing problem with connections not closing in default handler.

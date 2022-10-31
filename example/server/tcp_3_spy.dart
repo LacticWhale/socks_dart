@@ -20,7 +20,7 @@ void main() {
   // Listen to all tcp and udp connections
   proxy.connections.listen((connection) async {
     if (connection is TcpConnection) {
-      final target = await connection.accept(true);
+      final target = await connection.accept(connect: true);
       if (target == null) 
         return;
 

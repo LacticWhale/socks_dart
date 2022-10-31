@@ -16,10 +16,23 @@ class TcpConnection extends SocksConnection implements Connection {
   final SocksConnection connection;
 
   @override
-  Future<Socket?> accept([bool connect = false]) async {
+  Future<Socket?> accept({
+    bool? connect,
+    bool? allowIPv6,
+  }) async {
     final Socket? target;
 
-    if (connect) {
+    final _connect = connect ?? false;
+    final _allowIPv6 = allowIPv6 ?? false;
+
+    if (_connect == true) {
+      if(_allowIPv6 == false) {
+        add([
+          0x05,
+          CommandReplyCode.unsupportedAddressType.byte,
+        ]);
+        return null;
+      }
       try {
         target = await Socket.connect(
           desiredAddress.type == InternetAddressType.unix
@@ -52,9 +65,11 @@ class TcpConnection extends SocksConnection implements Connection {
   }
 
   @override
-  Future<void> forward() async {
+  Future<void> forward({
+    bool? allowIPv6,
+  }) async {
     // Accept proxy connection and connect to target
-    final target = await accept(true);
+    final target = await accept(allowIPv6: allowIPv6, connect: true);
     if (target == null) 
       return;
 
@@ -62,15 +77,13 @@ class TcpConnection extends SocksConnection implements Connection {
     unawaited(addStream(target)
       ..then((value) {
         print('Target disconnects');
-        close();
-        // target.close();  
-      }).catchError(() {}),);
+        close();  
+      }).ignore(),);
     unawaited(target.addStream(this)
       ..then((value) {
         print('Client disconnects.');
         target.close();
-        // close();
-      }).catchError(() {}));
+      }).ignore(),);
   }
 
   @override

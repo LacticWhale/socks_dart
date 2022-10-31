@@ -13,7 +13,10 @@ abstract class Connection implements SocksConnection {
   /// to requested host.
   ///
   /// Mustn't throw any errors.
-  Future<void> accept([bool connect = false]);
+  Future<void> accept({
+    bool? connect,
+    bool? allowIPv6,
+  });
   
   /// Redirects connection to given [proxy].
   Future<void> redirect(ProxySettings proxy);
@@ -23,5 +26,7 @@ abstract class Connection implements SocksConnection {
   /// **TCP**: Forward connection to requested host.
   ///
   /// **UDP**: Forward connections to respective hosts.
-  Future<void> forward();
+  Future<void> forward({
+    bool? allowIPv6,
+  });
 }

@@ -17,7 +17,10 @@ class UdpConnection extends SocksConnection implements Connection {
   final SocksConnection connection;
 
   @override
-  Future<SocksUdpClientBoundSocket> accept([bool? connect]) async {
+  Future<SocksUdpClientBoundSocket> accept({
+    bool? connect,
+    bool? allowIPv6,
+  }) async {
     final clientBoundSocket =
         SocksUdpClientBoundSocket(
       await RawDatagramSocket.bind(InternetAddress.anyIPv4, 0),
@@ -38,8 +41,11 @@ class UdpConnection extends SocksConnection implements Connection {
   }
 
   @override
-  Future<void> forward() async {
+  Future<void> forward({
+    bool? allowIPv6,
+  }) async {
     final client = await accept();
+    
     final remote =  await RawDatagramSocket.bind(InternetAddress.anyIPv4, 0);
 
     client.where((event) => event == RawSocketEvent.read).listen((event) {
