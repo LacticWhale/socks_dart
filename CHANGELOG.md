@@ -1,3 +1,7 @@
+## 1.0.4+dev.4
+
+- Remove print statement in socks_client.dart.
+
 ## 1.0.3+dev.3
 
 - Fix typo in logic of allowIPv6.
