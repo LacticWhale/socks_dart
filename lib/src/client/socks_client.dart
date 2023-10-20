@@ -165,7 +165,6 @@ class SocksSocket with StreamMixin<Uint8List>, SocketMixin, ByteReader {
     int targetPort, 
     SocksConnectionType type,
   ) async {
-    print(type);
     final addressType =
         AddressType.internetAddressTypeMap[targetAddress.type]!;
     final rawAddress = targetAddress.rawAddress;
