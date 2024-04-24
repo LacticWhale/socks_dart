@@ -8,6 +8,7 @@ import 'package:meta/meta.dart';
 import '../../enums/authentication_method.dart';
 import '../../enums/command_reply_code.dart';
 import '../../enums/socks_connection_type.dart';
+import '../address_resolve.dart';
 import '../address_type.dart';
 import '../mixin/byte_reader.dart';
 import '../mixin/socket_mixin_.dart';
@@ -161,13 +162,14 @@ class SocksSocket with StreamMixin<Uint8List>, SocketMixin, ByteReader {
 
   /// Handle socks command.
   Future<void> _handleCommand(
-    InternetAddress targetAddress,
+    dynamic targetAddress,
     int targetPort, 
     SocksConnectionType type,
   ) async {
+    final target = await resolveAddress(targetAddress);
     final addressType =
-        AddressType.internetAddressTypeMap[targetAddress.type]!;
-    final rawAddress = targetAddress.rawAddress;
+        AddressType.internetAddressTypeMap[target.type]!;
+    final rawAddress = target.rawAddress;
 
     add(
       Uint8List.fromList([

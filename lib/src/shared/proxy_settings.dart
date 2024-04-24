@@ -10,7 +10,12 @@ class ProxySettings {
   });
 
   /// Proxy host
-  final InternetAddress host;
+  /// [host] can either be a [String] or an [InternetAddress]. If [host] is a
+  /// [String], [connect] will perform a [InternetAddress.lookup] and try
+  /// all returned [InternetAddress]es, until connected. Unless a
+  /// connection was established, the error from the first failing connection is
+  /// returned.
+  final dynamic host;
 
   /// Proxy port
   final int port;

@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
+import '../address_resolve.dart';
+
 import '../client/socks_udp_client.dart';
 import '../shared/proxy_settings.dart';
 import '../shared/socks_udp_client_bound_socket.dart';
@@ -80,7 +82,7 @@ class UdpConnection extends SocksConnection implements Connection {
   Future<void> redirect(ProxySettings proxy) async {
     final proxyClient = await SocksUDPClient.connect([proxy]);
     final client = await accept();
-
+    final target = await resolveAddress(proxy.host);
 
     client.transform(StreamTransformer<RawSocketEvent, SocksUpdPacket>.fromHandlers(
       handleData: (event, sink) {
@@ -93,7 +95,9 @@ class UdpConnection extends SocksConnection implements Connection {
 
         sink.add(packet);
       },
-    ),).listen((packet) => proxyClient.send(packet.socksPacket, proxy.host, proxy.port));
+    ),).listen((packet) {
+      proxyClient.send(packet.socksPacket, target, proxy.port);
+    });
 
     proxyClient.transform(StreamTransformer<RawSocketEvent, SocksUpdPacket>.fromHandlers(
       handleData: (event, sink) {
