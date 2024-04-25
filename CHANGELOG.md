@@ -1,3 +1,7 @@
+## 1.0.5+dev.1
+
+- Remove unnecessary DNS resolve in socks_tcp_client.dart.
+
 ## 1.0.4+dev.4
 
 - Remove print statement in socks_client.dart.

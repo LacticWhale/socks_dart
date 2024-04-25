@@ -7,14 +7,7 @@ void main() async {
   const host = 'example.com';
   const port = 80;
 
-  final InternetAddress address;
-  try {
-    // Lookup address
-    address = (await InternetAddress.lookup(host))[0];
-  } catch (e) {
-    // Lookup failed
-    return print(e);
-  }
+  final address = InternetAddress(host, type: InternetAddressType.unix);
 
   final Socket proxySocket;
   try {

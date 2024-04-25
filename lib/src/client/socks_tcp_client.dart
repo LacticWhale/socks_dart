@@ -61,13 +61,7 @@ class SocksTCPClient extends SocksSocket {
     InternetAddress host,
     int port,
   ) async {
-    final InternetAddress address;
-    if(host.type == InternetAddressType.unix)
-      address = (await InternetAddress.lookup(host.address))[0];
-    else 
-      address = host;
-
-    final client = await SocksSocket.initialize(proxies, address, port, SocksConnectionType.connect);
+    final client = await SocksSocket.initialize(proxies, host, port, SocksConnectionType.connect);
     return client.socket;
   }
 }

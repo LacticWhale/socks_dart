@@ -9,7 +9,7 @@ final client = HttpClient();
 
 // Assign connection factory
 SocksTCPClient.assignToHttpClient(client, [
-  ProxySettings(InternetAddress('95.216.93.71'), 1080),
+  ProxySettings(InternetAddress.loopbackIPv4, 1080),
 ]);
 
 // GET request

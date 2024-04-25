@@ -33,7 +33,7 @@ class UdpConnection extends SocksConnection implements Connection {
       0x01, // IPv4 
       0x00, 0x00, 0x00, 0x00, // 0.0.0.0
       // Convert short port to big endian byte list.
-      (clientBoundSocket.port & 0xff00) >> 8, clientBoundSocket.port & 0xff
+      (clientBoundSocket.port & 0xff00) >> 8, clientBoundSocket.port & 0xff,
     ]);
     await flush();
 
