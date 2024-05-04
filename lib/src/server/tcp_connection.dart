@@ -8,8 +8,7 @@ import 'connection.dart';
 import 'socks_connection.dart';
 
 class TcpConnection extends SocksConnection implements Connection {
-  TcpConnection(this.connection)
-      : super(connection, connection.authHandler) {
+  TcpConnection(this.connection, {super.authHandler, super.lookup}) : super(connection) {
     absorbConnection(connection);
   }
 

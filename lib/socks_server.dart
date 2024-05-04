@@ -1,5 +1,3 @@
-library socks5.server;
-
 export 'src/server/auth_handler.dart';
 export 'src/server/connection.dart';
 export 'src/server/socks_server.dart';

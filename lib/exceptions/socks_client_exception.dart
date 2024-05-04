@@ -1,0 +1,3 @@
+class SocksClientException implements Exception {
+
+}

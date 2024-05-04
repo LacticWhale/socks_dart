@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:async/async.dart';
+import 'package:meta/meta.dart';
 
 import '../../enums/authentication_method.dart';
 import '../../enums/command_reply_code.dart';
@@ -14,14 +15,18 @@ import '../address_type.dart';
 import '../mixin/byte_reader.dart';
 import '../mixin/socket_mixin_.dart';
 import '../mixin/stream_mixin.dart';
+import '../shared/lookup.dart';
 import 'auth_handler.dart';
 import 'connection.dart';
 import 'tcp_connection.dart';
 import 'udp_connection.dart';
 
 class SocksConnection with StreamMixin<Uint8List>, SocketMixin, ByteReader {
-  SocksConnection(this.socket, [this.authHandler]);
+  SocksConnection(this.socket, {this.authHandler, this.lookup = InternetAddress.lookup});
   
+  /// Can be overriden/set to be custom domain lookup function.
+  LookupFunction lookup;
+
   @override
   final Socket socket;
 
@@ -231,7 +236,7 @@ class SocksConnection with StreamMixin<Uint8List>, SocketMixin, ByteReader {
 
     final addressType = AddressType.byteMap[addressTypeByte]!;
     try {
-      final address = await getAddress(addressType);
+      final address = await getAddress(addressType, lookup);
       if (address == null) 
         return CommandReplyCode.hostUnreachable;
       desiredAddress = address;
@@ -258,6 +263,7 @@ class SocksConnection with StreamMixin<Uint8List>, SocketMixin, ByteReader {
     }
   }
 
+  @protected
   void absorbConnection(SocksConnection connection) {
     desiredAddress = connection.desiredAddress;
     desiredPort = connection.desiredPort;

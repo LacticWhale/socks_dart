@@ -12,6 +12,7 @@ import '../address_type.dart';
 import '../mixin/byte_reader.dart';
 import '../mixin/socket_mixin_.dart';
 import '../mixin/stream_mixin.dart';
+import '../shared/lookup.dart';
 import '../shared/proxy_settings.dart';
 import 'socks_command_response.dart';
 
@@ -31,6 +32,9 @@ class SocksSocket with StreamMixin<Uint8List>, SocketMixin, ByteReader {
   SocksSocket.protected(this.socket, this.type);
 
   final SocksConnectionType type;
+
+  /// Can be overriden/set to be custom domain lookup function.
+  LookupFunction lookup = InternetAddress.lookup;
 
   @override
   Socket socket;
@@ -202,7 +206,7 @@ class SocksSocket with StreamMixin<Uint8List>, SocketMixin, ByteReader {
     await readUint8();
     
     final addressType = AddressType.byteMap[await readUint8()]!;
-    final address = await getAddress(addressType);
+    final address = await getAddress(addressType, lookup);
     final port = await readUint16();
     return SocksCommandResponse(version, commandResponse, addressType, address!, port);
   }

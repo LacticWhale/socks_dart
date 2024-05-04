@@ -5,7 +5,9 @@ import 'dart:typed_data';
 import 'package:async/async.dart';
 import 'package:meta/meta.dart';
 
+import '../../exceptions/byte_reader_exception.dart';
 import '../address_type.dart';
+import '../shared/lookup.dart';
 
 /// [ChunkedStreamReader] helper.
 mixin ByteReader {
@@ -29,20 +31,20 @@ mixin ByteReader {
   @protected
   Future<List<int>> readBytes(int size) async {
     final bytes = await data.readChunk(size);
-    if (bytes.length != size) {
-      throw RangeError('_readBytes has fewer bytes than expected.');
-    }
+    if (bytes.length != size) 
+      throw ByteReaderException('stream has fewer bytes than expected. Size: ${bytes.length}, expected: $size.');
+    
     return bytes;
   }
 
   /// Read various size bytes depending on [type] and parse IPv4/IPv6 address or lookup hostname.
   @protected
-  Future<InternetAddress?> getAddress(AddressType type) async {
+  Future<InternetAddress?> getAddress(AddressType type, [LookupFunction lookup = InternetAddress.lookup]) async {
     if (type == AddressType.domain) {   
       final length = await readUint8();
-      final chunk = await readBytes(length);
+      final domain = await readBytes(length);
 
-      final addresses = await InternetAddress.lookup(ascii.decode(chunk));
+      final addresses = await lookup(ascii.decode(domain));
       if (addresses.isEmpty) 
         return null;
       return addresses[0];

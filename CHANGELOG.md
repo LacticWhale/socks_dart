@@ -1,3 +1,9 @@
+## 1.0.5+dev.2
+
+- Added `ByteReaderException` which is thrown then server closes connection with clinet without stating the reason. 
+- Added `lookup` argument to every place it can be relevant.
+
+
 ## 1.0.5+dev.1
 
 - Remove unnecessary DNS resolve in socks_tcp_client.dart.

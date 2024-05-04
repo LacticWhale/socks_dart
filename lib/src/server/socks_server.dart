@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import '../shared/lookup.dart';
 import 'auth_handler.dart';
 import 'connection.dart';
 import 'socks_connection.dart';
@@ -8,7 +9,10 @@ import 'socks_connection.dart';
 /// Socks server.
 class SocksServer {
   /// Create new Socks server.
-  SocksServer({this.authHandler});
+  SocksServer({this.authHandler, this.lookup = InternetAddress.lookup});
+
+  /// Can be overriden/set to be custom domain lookup function.
+  LookupFunction lookup;
 
   /// Connections controller.
   final _connectionsController = StreamController<Connection>();
@@ -28,8 +32,10 @@ class SocksServer {
       (client) async {
         SocksConnection? connection;
 
-
-        connection = SocksConnection(client, authHandler);
+        connection = SocksConnection(client, 
+          authHandler: authHandler,
+          lookup: lookup,
+        );
 
         client.done.ignore();
 

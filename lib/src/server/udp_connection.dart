@@ -9,8 +9,7 @@ import 'connection.dart';
 import 'socks_connection.dart';
 
 class UdpConnection extends SocksConnection implements Connection {
-  UdpConnection(this.connection)
-      : super(connection, connection.authHandler) {
+  UdpConnection(this.connection, {super.authHandler, super.lookup}) : super(connection) {
     absorbConnection(connection);
   }
 
