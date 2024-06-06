@@ -61,7 +61,7 @@ class SocksServer {
   /// Add already bound ServerSocket.
   Future<void> addServerSocket(ServerSocket server) async {
     if (proxies.containsKey(server.port))
-      throw const SocketException('Port is already bound to a proxy server.');
+      throw SocketException('ServerSocket already in use for port $port.');
     proxies.addAll({server.port: server});
     unawaited(_listenForClientConnections(server));
   }
