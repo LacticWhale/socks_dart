@@ -1,3 +1,8 @@
+## 1.0.6
+
+- Added `addServerSocket` method to `SocksServer` which allows to add custom server sockets.
+- Added `ROADMAP.md`.
+
 ## 1.0.5+dev.2
 
 - Added `ByteReaderException` which is thrown then server closes connection with clinet without stating the reason. 

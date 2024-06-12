@@ -32,7 +32,8 @@ class SocksServer {
       (client) async {
         SocksConnection? connection;
 
-        connection = SocksConnection(client, 
+        connection = SocksConnection(
+          client,
           authHandler: authHandler,
           lookup: lookup,
         );
@@ -54,8 +55,13 @@ class SocksServer {
   Future<void> bind(InternetAddress address, int port) async {
     if (proxies.containsKey(port))
       throw const SocketException('Port is already bound to a proxy server.');
+    addServerSocket(await ServerSocket.bind(address, port));
+  }
 
-    final server = await ServerSocket.bind(address, port);
+  /// Add already bound ServerSocket.
+  Future<void> addServerSocket(ServerSocket server) async {
+    if (proxies.containsKey(server.port))
+      throw SocketException('ServerSocket already in use.');
     proxies.addAll({server.port: server});
     unawaited(_listenForClientConnections(server));
   }
