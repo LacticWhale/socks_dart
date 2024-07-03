@@ -1,3 +1,7 @@
+## 1.1.0
+
+- BREAKING: `SocketConnectionTask` is replaced with built-in `ConnectionTask.fromSocket`. Original class is removed!
+
 ## 1.0.6
 
 - Added `addServerSocket` method to `SocksServer` which allows to add custom server sockets.

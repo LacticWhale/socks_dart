@@ -1,10 +1,7 @@
-
-
 import 'dart:io';
 
 import '../../enums/socks_connection_type.dart';
 import '../shared/proxy_settings.dart';
-import 'socket_connection_task.dart';
 import 'socks_client.dart';
 
 class SocksTCPClient extends SocksSocket {
@@ -42,16 +39,20 @@ class SocksTCPClient extends SocksSocket {
         );
         
         // Secure connection after establishing Socks connection
-        if(uri.scheme == 'https')
-          return SocketConnectionTask((await client).secure(uri.host, 
+        if(uri.scheme == 'https') {
+          final Future<SecureSocket> secureClient;
+          return ConnectionTask.fromSocket(secureClient = (await client).secure(
+            uri.host, 
             context: context,
             onBadCertificate: onBadCertificate,
             keyLog: keyLog,
             supportedProtocols: supportedProtocols,
-          ),);
+          ), () async => (await secureClient).close().ignore(),);
+        }
 
         // SocketConnectionTask implements ConnectionTask<Socket>
-        return SocketConnectionTask(client);
+        return ConnectionTask.fromSocket(client, 
+          () async => (await client).close().ignore(),);
       };
   }
 
