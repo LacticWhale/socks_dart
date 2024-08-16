@@ -11,7 +11,7 @@ class SocksServer {
   /// Create new Socks server.
   SocksServer({this.authHandler, this.lookup = InternetAddress.lookup});
 
-  /// Can be overriden/set to be custom domain lookup function.
+  /// Can be overridden/set to be custom domain lookup function.
   LookupFunction lookup;
 
   /// Connections controller.
@@ -55,14 +55,39 @@ class SocksServer {
   Future<void> bind(InternetAddress address, int port) async {
     if (proxies.containsKey(port))
       throw const SocketException('Port is already bound to a proxy server.');
-    addServerSocket(await ServerSocket.bind(address, port));
+    return addServerSocket(await ServerSocket.bind(address, port));
   }
 
   /// Add already bound ServerSocket.
   Future<void> addServerSocket(ServerSocket server) async {
     if (proxies.containsKey(server.port))
-      throw SocketException('ServerSocket already in use.');
+      throw const SocketException('ServerSocket already in use.');
     proxies.addAll({server.port: server});
     unawaited(_listenForClientConnections(server));
+  }
+
+  /// Closes proxy server listening on [port]. To close all server use [closeAll] method.
+  /// 
+  /// StreamController for [connections] will still be opened. To close it use [stop] method.
+  Future<void> close(int port) async {
+    await proxies[port]?.close();
+  }
+
+  /// Closes all proxy servers. To close specific server use [close] method.
+  /// 
+  /// StreamController for [connections] will still be opened. To close it use [stop] method.
+  Future<void> closeAll() async {
+    for (final server in proxies.values)
+      await server.close();
+
+    proxies.clear();
+  }
+
+  /// Closes all connections and closes connection controller no more servers can be bound to this instance.
+  /// 
+  /// Calls [closeAll] before closing [connections] stream.
+  Future<void> stop() async {
+    await closeAll();
+    await _connectionsController.close();
   }
 }

@@ -5,13 +5,13 @@ import 'dart:typed_data';
 import 'package:async/async.dart';
 import 'package:meta/meta.dart';
 
-import '../../enums/authentication_method.dart';
-import '../../enums/command_reply_code.dart';
-import '../../enums/command_type.dart';
-import '../../enums/message.dart';
-import '../../enums/socks_connection_state.dart';
-import '../../enums/socks_connection_type.dart';
 import '../address_type.dart';
+import '../enums/authentication_method.dart';
+import '../enums/command_reply_code.dart';
+import '../enums/command_type.dart';
+import '../enums/message.dart';
+import '../enums/socks_connection_state.dart';
+import '../enums/socks_connection_type.dart';
 import '../mixin/byte_reader.dart';
 import '../mixin/socket_mixin_.dart';
 import '../mixin/stream_mixin.dart';
@@ -24,7 +24,7 @@ import 'udp_connection.dart';
 class SocksConnection with StreamMixin<Uint8List>, SocketMixin, ByteReader {
   SocksConnection(this.socket, {this.authHandler, this.lookup = InternetAddress.lookup});
   
-  /// Can be overriden/set to be custom domain lookup function.
+  /// Can be overridden/set to be custom domain lookup function.
   LookupFunction lookup;
 
   @override
@@ -212,16 +212,13 @@ class SocksConnection with StreamMixin<Uint8List>, SocketMixin, ByteReader {
       case CommandType.connect:
         state = SocksConnectionState.connecting;
         type = SocksConnectionType.connect;
-        break;
       case CommandType.associate:
         state = SocksConnectionState.associating;
         type = SocksConnectionType.associate;
-        break;
       case CommandType.bind:
         // TODO: Bind command
         state = SocksConnectionState.binding;
         type = SocksConnectionType.bind;
-        break;
     }
 
     // Read reserved byte

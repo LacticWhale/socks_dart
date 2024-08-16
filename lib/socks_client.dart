@@ -1,4 +1,7 @@
-export 'src/client/socket_connection_task.dart';
+/// {@canonicalFor socks_tcp_client.SocksTCPClient}
+/// {@canonicalFor proxy_settings.ProxySettings}
+library socks_client;
+
 export 'src/client/socks_tcp_client.dart';
 // UDP client not yet implemented.
 // export 'src/client/socks_udp_client.dart'; 

@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:socks5_proxy/socks_enums.dart';
+import 'package:socks5_proxy/enums.dart';
 import 'package:socks5_proxy/socks_server.dart';
 
 bool testIPMask(InternetAddress address, List<int> mask) {
@@ -42,7 +42,6 @@ void main() async {
         }
         // Apply default handler
         await connection.forward();
-        break;
       default:
         // Deny other type of connection
         await connection.reject(CommandReplyCode.unsupportedCommand);

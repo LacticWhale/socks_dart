@@ -7,7 +7,9 @@ import '../shared/socks_udp_client_bound_socket.dart';
 import '../shared/socks_udp_packet.dart';
 import 'connection.dart';
 import 'socks_connection.dart';
+import 'socks_server.dart';
 
+/// Connected client connection emitted by [SocksServer] if client requested UDP connection.
 class UdpConnection extends SocksConnection implements Connection {
   UdpConnection(this.connection, {super.authHandler, super.lookup}) : super(connection) {
     absorbConnection(connection);

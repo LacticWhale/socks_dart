@@ -1,0 +1,12 @@
+name: socks5_proxy_examples
+publish-to: none
+description: Socks5 server and client examples.
+
+environment:
+  sdk: '>=3.5.0 <4.0.0'
+
+dependencies:
+  async: ^2.9.0
+  crypto: ^3.0.5
+  socks5_proxy:
+    path: ..

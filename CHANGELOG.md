@@ -1,3 +1,16 @@
+## 2.0.0
+
+- Added `close`, `closeAll`, and `stop` methods to `SocksServer`.
+- Added `SocksClientConnectionClosedException` and `SocksClientConnectionCommandFailedException`.
+- Updated documentation.
+- Updated server examples.
+- BREAKING: `package:socks5_proxy/socks_enums.dart` was replaced with `package:socks5_proxy/enums.dart`.
+- BREAKING: `package:socks5_proxy/enums/*.dart` and `package:socks5_proxy/exceptions/*.dart` were made private use `package:socks5_proxy/exceptions.dart` or `package:socks5_proxy/exceptions.dart` if you need to access them.
+
+## 1.1.0
+
+- BREAKING: `SocketConnectionTask` is replaced with built-in `ConnectionTask.fromSocket`. Original class is removed!
+
 ## 1.0.6
 
 - Added `addServerSocket` method to `SocksServer` which allows to add custom server sockets.
