@@ -65,4 +65,29 @@ class SocksServer {
     proxies.addAll({server.port: server});
     unawaited(_listenForClientConnections(server));
   }
+
+  /// Closes proxy server listening on [port]. To close all server use [closeAll] method.
+  /// 
+  /// StreamController for [connections] will still be opened. To close it use [stop] method.
+  Future<void> close(int port) async {
+    await proxies[port]?.close();
+  }
+
+  /// Closes all proxy servers. To close specific server use [close] method.
+  /// 
+  /// StreamController for [connections] will still be opened. To close it use [stop] method.
+  Future<void> closeAll() async {
+    for (final server in proxies.values)
+      await server.close();
+
+    proxies.clear();
+  }
+
+  /// Closes all connections and closes connection controller no more servers can be bound to this instance.
+  /// 
+  /// Calls [closeAll] before closing [connections] stream.
+  Future<void> stop() async {
+    await closeAll();
+    await _connectionsController.close();
+  }
 }
