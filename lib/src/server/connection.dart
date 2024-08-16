@@ -1,7 +1,7 @@
 import '../../socks.dart';
 import 'socks_connection.dart';
 
-/// Generic socks connection interface.
+/// Generic socks connection interface emitted by [SocksServer].
 abstract class Connection implements SocksConnection {
   /// Reject connection with optional [message].
   @override

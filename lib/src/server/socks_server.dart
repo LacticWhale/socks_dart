@@ -11,7 +11,7 @@ class SocksServer {
   /// Create new Socks server.
   SocksServer({this.authHandler, this.lookup = InternetAddress.lookup});
 
-  /// Can be overriden/set to be custom domain lookup function.
+  /// Can be overridden/set to be custom domain lookup function.
   LookupFunction lookup;
 
   /// Connections controller.

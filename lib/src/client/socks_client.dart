@@ -5,10 +5,10 @@ import 'dart:typed_data';
 import 'package:async/async.dart';
 import 'package:meta/meta.dart';
 
-import '../../enums/authentication_method.dart';
-import '../../enums/command_reply_code.dart';
-import '../../enums/socks_connection_type.dart';
 import '../address_type.dart';
+import '../enums/authentication_method.dart';
+import '../enums/command_reply_code.dart';
+import '../enums/socks_connection_type.dart';
 import '../mixin/byte_reader.dart';
 import '../mixin/socket_mixin_.dart';
 import '../mixin/stream_mixin.dart';
@@ -33,7 +33,7 @@ class SocksSocket with StreamMixin<Uint8List>, SocketMixin, ByteReader {
 
   final SocksConnectionType type;
 
-  /// Can be overriden/set to be custom domain lookup function.
+  /// Can be overridden/set to be custom domain lookup function.
   LookupFunction lookup = InternetAddress.lookup;
 
   @override
@@ -57,8 +57,9 @@ class SocksSocket with StreamMixin<Uint8List>, SocketMixin, ByteReader {
     int port,
     SocksConnectionType type,
   ) async {
-    if(proxies.isEmpty)
+    if(proxies.isEmpty) {
       throw ArgumentError.value(proxies, 'proxies', 'empty');
+    }
 
     final socket = await Socket.connect(proxies.first.host, proxies.first.port);
   
@@ -68,8 +69,9 @@ class SocksSocket with StreamMixin<Uint8List>, SocketMixin, ByteReader {
     for(var i = 1; i < proxies.length; i++) {
       await client._handleCommand(proxies[i].host, proxies[i].port, SocksConnectionType.connect);
       final response = await client._handleCommandResponse(SocksConnectionType.connect);
-      if(response.address != InternetAddress('0.0.0.0') || response.port != 0)
+      if(response.address != InternetAddress('0.0.0.0') || response.port != 0) {
         throw UnimplementedError('Connect associated proxy not yet implemented.');
+      }
       await client._handshake(proxies[i]);
     }
 
@@ -154,7 +156,7 @@ class SocksSocket with StreamMixin<Uint8List>, SocketMixin, ByteReader {
     // Checking authentication version.
     if (await readUint8() != 0x01) {
       close().ignore();
-      throw Exception('Unsupported userpass authentication version.');
+      throw Exception('Unsupported user/pass authentication version.');
     }
     // Checking authentication response, 0x00 - succeed, other - failed.
     if (await readUint8() != 0x00) {

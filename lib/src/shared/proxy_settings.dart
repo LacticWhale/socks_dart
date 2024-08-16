@@ -1,5 +1,6 @@
 import 'dart:io';
 
+/// Stores information to connect to socks server.
 class ProxySettings {
   /// Creates proxy settings object
   ProxySettings(

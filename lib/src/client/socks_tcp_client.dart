@@ -1,9 +1,11 @@
 import 'dart:io';
 
-import '../../enums/socks_connection_type.dart';
+import '../enums/socks_connection_type.dart';
 import '../shared/proxy_settings.dart';
 import 'socks_client.dart';
 
+
+/// [Socket] wrapper for socks TCP connection.
 class SocksTCPClient extends SocksSocket {
   SocksTCPClient._internal(Socket socket) : super.protected(socket, SocksConnectionType.connect);
 

@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
-import '../../enums/socks_connection_type.dart';
+import '../enums/socks_connection_type.dart';
 import '../mixin/raw_datagram_socket_mixin.dart';
 import '../mixin/stream_mixin.dart';
 import '../shared/proxy_settings.dart';
@@ -10,6 +10,7 @@ import '../shared/socks_udp_packet.dart';
 import 'socks_client.dart';
 import 'socks_command_response.dart';
 
+/// [Socket] imitation for socks TCP connection.
 class SocksUDPClient with StreamMixin<RawSocketEvent>, RawDatagramSocketMixin {
   SocksUDPClient._internal(this.rawDatagramSocket, this.tcpSocket, this.commandResponse);
 

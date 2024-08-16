@@ -1,3 +1,10 @@
+/// {@canonicalFor auth_handler.AuthHandler}
+/// {@canonicalFor socks_udp_packet.SocksUpdPacket}
+/// {@canonicalFor connection.Connection}
+/// {@canonicalFor tcp_connection.TcpConnection}
+/// {@canonicalFor udp_connection.UdpConnection}
+library socks_server;
+
 export 'src/server/auth_handler.dart';
 export 'src/server/connection.dart';
 export 'src/server/socks_server.dart';

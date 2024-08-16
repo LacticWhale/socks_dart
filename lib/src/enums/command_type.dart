@@ -11,8 +11,8 @@ enum CommandType {
 
   /// Byte to [CommandType] map.
   static Map<int, CommandType> get byteMap => const {
-        0x01: CommandType.connect,
-        0x02: CommandType.bind,
-        0x03: CommandType.associate,
-      };
+    0x01: CommandType.connect,
+    0x02: CommandType.bind,
+    0x03: CommandType.associate,
+  };
 }

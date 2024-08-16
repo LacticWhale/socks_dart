@@ -5,8 +5,8 @@ import 'dart:typed_data';
 import 'package:async/async.dart';
 import 'package:meta/meta.dart';
 
-import '../../exceptions/byte_reader_exception.dart';
 import '../address_type.dart';
+import '../exceptions/byte_reader_exception.dart';
 import '../shared/lookup.dart';
 
 /// [ChunkedStreamReader] helper.

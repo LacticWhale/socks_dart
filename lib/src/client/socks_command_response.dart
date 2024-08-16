@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import '../../enums/command_reply_code.dart';
 import '../address_type.dart';
+import '../enums/command_reply_code.dart';
 
 class SocksCommandResponse {
   const SocksCommandResponse(this.version, this.commandResponse, this.addressType, this.address, this.port);

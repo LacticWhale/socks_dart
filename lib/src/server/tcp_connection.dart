@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'dart:io';
 
-import '../../enums/command_reply_code.dart';
 import '../client/socks_tcp_client.dart';
+import '../enums/command_reply_code.dart';
 import '../shared/proxy_settings.dart';
 import 'connection.dart';
 import 'socks_connection.dart';
+import 'socks_server.dart';
 
+/// Connected client connection emitted by [SocksServer] if client requested TCP connection.
 class TcpConnection extends SocksConnection implements Connection {
   TcpConnection(this.connection, {super.authHandler, super.lookup}) : super(connection) {
     absorbConnection(connection);
@@ -24,8 +26,8 @@ class TcpConnection extends SocksConnection implements Connection {
     final _connect = connect ?? false;
     final _allowIPv6 = allowIPv6 ?? false;
 
-    if (_connect == true) {
-      if(_allowIPv6 == false && desiredAddress.type == InternetAddressType.IPv6) {
+    if (_connect) {
+      if(!_allowIPv6 && desiredAddress.type == InternetAddressType.IPv6) {
         add([
           0x05,
           CommandReplyCode.unsupportedAddressType.byte,

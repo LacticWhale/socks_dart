@@ -1,5 +1,3 @@
-// ignore_for_file: constant_identifier_names
-
 import 'message.dart';
 
 /// Socks authentication method.
@@ -8,6 +6,7 @@ enum AuthenticationMethod implements Message {
   noAuthenticationRequired(0x00),
 
   /// 0x01 - GSSAPI.
+  // ignore: constant_identifier_names
   GSSAPI(0x01),
 
   /// 0x02 - Username and password.

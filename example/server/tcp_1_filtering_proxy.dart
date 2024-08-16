@@ -42,7 +42,6 @@ void main() async {
         }
         // Apply default handler
         await connection.forward();
-        break;
       default:
         // Deny other type of connection
         await connection.reject(CommandReplyCode.unsupportedCommand);
