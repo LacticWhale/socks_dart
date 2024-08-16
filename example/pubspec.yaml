@@ -9,8 +9,4 @@ dependencies:
   async: ^2.9.0
   crypto: ^3.0.5
   socks5_proxy:
-
-dependencies_override:
-  socks5_proxy:
-    path: ../
-
+    path: ..

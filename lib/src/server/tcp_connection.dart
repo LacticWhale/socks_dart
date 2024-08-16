@@ -77,12 +77,10 @@ class TcpConnection extends SocksConnection implements Connection {
     // "Link" streams
     unawaited(addStream(target)
       ..then((value) {
-        print('Target disconnects');
         close();  
       }).ignore(),);
     unawaited(target.addStream(this)
       ..then((value) {
-        print('Client disconnects.');
         target.close();
       }).ignore(),);
   }

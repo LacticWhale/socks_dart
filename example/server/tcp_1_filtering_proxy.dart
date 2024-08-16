@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:socks5_proxy/socks_enums.dart';
+import 'package:socks5_proxy/enums.dart';
 import 'package:socks5_proxy/socks_server.dart';
 
 bool testIPMask(InternetAddress address, List<int> mask) {

@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:socks5_proxy/enums.dart';
+import 'package:socks5_proxy/exceptions.dart';
 import 'package:socks5_proxy/socks_client.dart';
 
 void main() async {
@@ -14,13 +16,27 @@ void main() async {
     // Connect to proxy
     proxySocket = await SocksTCPClient.connect(
       [
-        ProxySettings(InternetAddress.loopbackIPv4, 1080),
+        ProxySettings(InternetAddress.loopbackIPv4, 1080, username: 'username', password: 'password'),
       ],
       address,
       port,
     );
-  } catch (e) {
-    print(e);
+  } on SocksClientConnectionClosedException catch (error) {
+    // Underlying socket is already closed if it was opened by this point.
+    
+    // Be aware that other server (server of this packet tries to minimize this)
+    // can close connection at any time without sending response to client.
+    
+    print(error);
+    return;
+  } on SocksClientConnectionCommandFailedException catch (error) {
+    // Underlying socket is already closed if it was opened by this point.
+    if (error.code == CommandReplyCode.connectionDenied) {
+      print('Invalid username/password');
+    } else {
+      print(error);
+    }
+
     return;
   }
 
@@ -30,10 +46,13 @@ void main() async {
       print(ascii.decode(event));
 
       exit(0);
-    })
+    }, onError: (Object? error, StackTrace stackTrace) {
+      print(error.runtimeType);
+      print(stackTrace);
+      exit(0);
+    },)
 
     // Send data to client
-    // proxyClient.add(Uint8List.fromList([0x01, 0x02, 0x03]));
     ..write(
       '''HEAD / HTTP/1.1
 HOST: example.com
@@ -42,11 +61,17 @@ Connection: close
 
 ''',
     );
-  await proxySocket.flush();
-  await proxySocket.close();
 
   Future.delayed(const Duration(seconds: 30), () {
     print('Timeout. Target haven\'t replied in given time.');
     exit(0);
   });
+  try {
+    await proxySocket.flush();
+    await proxySocket.close();
+  } catch (e, st) {
+    print(e.runtimeType);
+    print(st);
+    exit(0);
+  }
 }

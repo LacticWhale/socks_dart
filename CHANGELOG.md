@@ -1,6 +1,7 @@
 ## 2.0.0
 
 - Added `close`, `closeAll`, and `stop` methods to `SocksServer`.
+- Added `SocksClientConnectionClosedException` and `SocksClientConnectionCommandFailedException`.
 - Updated documentation.
 - Updated server examples.
 - BREAKING: `package:socks5_proxy/socks_enums.dart` was replaced with `package:socks5_proxy/enums.dart`.
