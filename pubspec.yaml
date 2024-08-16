@@ -4,11 +4,12 @@ description: Socks5 server and client with ability to catch packet in both direc
 repository: https://github.com/LacticWhale/socks_dart
 
 environment:
-  sdk: '>=3.5.0-323 <4.0.0'
+  sdk: '>=3.5.0 <4.0.0'
 
 dev_dependencies:
   test: ^1.16.0
-  zekfad_lints: ^1.1.0
+  zekfad_lints: ^2.1.0
+
 dependencies:
   async: ^2.9.0
   meta: ^1.8.0
