@@ -212,13 +212,16 @@ class SocksConnection with StreamMixin<Uint8List>, SocketMixin, ByteReader {
       case CommandType.connect:
         state = SocksConnectionState.connecting;
         type = SocksConnectionType.connect;
+        break;
       case CommandType.associate:
         state = SocksConnectionState.associating;
         type = SocksConnectionType.associate;
+        break;
       case CommandType.bind:
         // TODO: Bind command
         state = SocksConnectionState.binding;
         type = SocksConnectionType.bind;
+        break;
     }
 
     // Read reserved byte

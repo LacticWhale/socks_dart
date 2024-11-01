@@ -6,9 +6,10 @@ class ProxySettings {
   ProxySettings(
     this.host,
     this.port, {
-    this.password,
-    this.username,
-  });
+      this.password,
+      this.username,
+      this.context,
+    });
 
   /// Proxy host
   final InternetAddress host;
@@ -21,6 +22,9 @@ class ProxySettings {
 
   /// Proxy username
   final String? username;
+
+  /// Context to establish TLS.
+  final SecurityContext? context;
 
   @override
   String toString() {

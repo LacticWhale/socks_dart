@@ -62,8 +62,12 @@ class SocksSocket with StreamMixin<Uint8List>, SocketMixin, ByteReader {
     if(proxies.isEmpty) {
       throw ArgumentError.value(proxies, 'proxies', 'empty');
     }
-
-    final socket = await Socket.connect(proxies.first.host, proxies.first.port);
+    final first = proxies.first;
+    final Socket socket;
+    if (first.context != null)
+      socket = await SecureSocket.connect(first.host, first.port);
+    else  
+      socket = await Socket.connect(proxies.first.host, proxies.first.port);
   
     final client = SocksSocket.protected(socket, type);
 

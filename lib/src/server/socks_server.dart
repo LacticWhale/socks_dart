@@ -9,7 +9,9 @@ import 'socks_connection.dart';
 /// Socks server.
 class SocksServer {
   /// Create new Socks server.
-  SocksServer({this.authHandler, this.lookup = InternetAddress.lookup});
+  SocksServer({this.authHandler, this.lookup = InternetAddress.lookup, this.connectionTransform});
+
+  final StreamTransformer<Socket, Socket>? connectionTransform;
 
   /// Can be overridden/set to be custom domain lookup function.
   LookupFunction lookup;
@@ -28,7 +30,10 @@ class SocksServer {
 
   /// Setup listener for client connections.
   Future<void> _listenForClientConnections(ServerSocket server) async {
-    server.listen(
+    (connectionTransform != null 
+      ? server.transform(connectionTransform!) 
+      : server
+    ).listen(
       (client) async {
         SocksConnection? connection;
 
