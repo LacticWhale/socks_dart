@@ -13,7 +13,10 @@ class SocksTCPClient extends SocksSocket {
   static void assignToHttpClient(
     HttpClient httpClient,
     List<ProxySettings> proxies,
-  ) => assignToHttpClientWithSecureOptions(httpClient, proxies);
+    {
+      bool tryLookup = false,
+    }
+  ) => assignToHttpClientWithSecureOptions(httpClient, proxies, tryLookup: tryLookup);
 
   /// Assign http client connection factory to proxy connection.
   /// 
@@ -29,14 +32,16 @@ class SocksTCPClient extends SocksSocket {
       bool Function(X509Certificate certificate)? onBadCertificate,
       void Function(String line)? keyLog,
       List<String>? supportedProtocols,
+      bool tryLookup = false,
     }
   ) {
     httpClient.connectionFactory =
       (uri, proxyHost, proxyPort) async {
         // Returns instance of SocksSocket which implements Socket
+        final address = await InternetAddress.lookup(uri.host);
         final client = SocksTCPClient.connect(
           proxies,
-          InternetAddress(uri.host, type: InternetAddressType.unix),
+          address.firstOrNull ?? InternetAddress(uri.host, type: InternetAddressType.unix),
           uri.port,
         );
         
@@ -44,7 +49,7 @@ class SocksTCPClient extends SocksSocket {
         if(uri.scheme == 'https') {
           final Future<SecureSocket> secureClient;
           return ConnectionTask.fromSocket(secureClient = (await client).secure(
-            uri.host, 
+            host ?? uri.host, 
             context: context,
             onBadCertificate: onBadCertificate,
             keyLog: keyLog,

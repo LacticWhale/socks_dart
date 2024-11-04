@@ -8,9 +8,12 @@ void main() async {
   final client = HttpClient();
 
   // Assign connection factory
-  SocksTCPClient.assignToHttpClient(client, [
-    ProxySettings(InternetAddress.loopbackIPv4, 1080),
-  ]);
+  SocksTCPClient.assignToHttpClient(client, 
+    tryLookup: true,
+    [
+      ProxySettings(InternetAddress.loopbackIPv4, 1080),
+    ], 
+  );
 
   try {
     // GET request
