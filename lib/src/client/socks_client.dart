@@ -10,7 +10,6 @@ import '../address_type.dart';
 import '../enums/authentication_method.dart';
 import '../enums/command_reply_code.dart';
 import '../enums/socks_connection_type.dart';
-import '../exceptions/client/connection_command_failed_exception.dart';
 import '../mixin/byte_reader.dart';
 import '../mixin/socket_mixin_.dart';
 import '../mixin/stream_mixin.dart';
@@ -62,9 +61,14 @@ class SocksSocket with StreamMixin<Uint8List>, SocketMixin, ByteReader {
     if(proxies.isEmpty) {
       throw ArgumentError.value(proxies, 'proxies', 'empty');
     }
+    final first = proxies.first;
+    final Socket socket;
+    if (first.context != null) {
+      socket = await SecureSocket.connect(first.host, first.port, context: first.context, onBadCertificate: (certificate) => true);
+    } else {
+      socket = await Socket.connect(proxies.first.host, proxies.first.port);
+    }
 
-    final socket = await Socket.connect(proxies.first.host, proxies.first.port);
-  
     final client = SocksSocket.protected(socket, type);
 
     try {
@@ -82,7 +86,7 @@ class SocksSocket with StreamMixin<Uint8List>, SocketMixin, ByteReader {
       await client._handleCommand(address, port, type);
 
       final response = await client._handleCommandResponse(type);
-      
+
       return SocksClientInitializeResult(client, response);
     } on ByteReaderException catch (error, stackTrace) {
       socket.close().ignore();
@@ -98,18 +102,18 @@ class SocksSocket with StreamMixin<Uint8List>, SocketMixin, ByteReader {
     List<String>? supportedProtocols,
     }) async {
     final secureSocket = await SecureSocket.secure(socket,
-      host: host, 
+      host: host,
       context: context,
       onBadCertificate: onBadCertificate,
       keyLog: keyLog,
       supportedProtocols: supportedProtocols,
-    );  
+    );
     socket = secureSocket;
 
     _broadcast = socket.asBroadcastStream();
     return secureSocket;
   }
- 
+
   /// Socks handshake.
   Future<void> _handshake(ProxySettings proxy) async {
     final authenticationMethods = [
@@ -176,7 +180,7 @@ class SocksSocket with StreamMixin<Uint8List>, SocketMixin, ByteReader {
   /// Handle socks command.
   Future<void> _handleCommand(
     InternetAddress targetAddress,
-    int targetPort, 
+    int targetPort,
     SocksConnectionType type,
   ) async {
     final addressType =
@@ -204,7 +208,7 @@ class SocksSocket with StreamMixin<Uint8List>, SocketMixin, ByteReader {
     if(version != 0x05)
       throw Exception('Unsupported Socks Version');
     final commandResponse = CommandReplyCode.values[await readUint8()];
- 
+
     if (commandResponse != CommandReplyCode.succeed) {
       close().ignore();
       throw SocksClientConnectionCommandFailedException(commandResponse);
@@ -212,7 +216,7 @@ class SocksSocket with StreamMixin<Uint8List>, SocketMixin, ByteReader {
 
     // Read reserved byte.
     await readUint8();
-    
+
     final addressType = AddressType.byteMap[await readUint8()]!;
     final address = await getAddress(addressType, lookup);
     final port = await readUint16();

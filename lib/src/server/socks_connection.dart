@@ -23,7 +23,7 @@ import 'udp_connection.dart';
 
 class SocksConnection with StreamMixin<Uint8List>, SocketMixin, ByteReader {
   SocksConnection(this.socket, {this.authHandler, this.lookup = InternetAddress.lookup});
-  
+
   /// Can be overridden/set to be custom domain lookup function.
   LookupFunction lookup;
 
@@ -222,7 +222,7 @@ class SocksConnection with StreamMixin<Uint8List>, SocketMixin, ByteReader {
     }
 
     // Read reserved byte
-    if (await readUint8() != 0x00) 
+    if (await readUint8() != 0x00)
       return CommandReplyCode.unsupportedCommand;
 
     final addressTypeByte = await readUint8();
@@ -234,7 +234,7 @@ class SocksConnection with StreamMixin<Uint8List>, SocketMixin, ByteReader {
     final addressType = AddressType.byteMap[addressTypeByte]!;
     try {
       final address = await getAddress(addressType, lookup);
-      if (address == null) 
+      if (address == null)
         return CommandReplyCode.hostUnreachable;
       desiredAddress = address;
     } catch (e) {

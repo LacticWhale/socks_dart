@@ -5,13 +5,13 @@ import 'dart:typed_data';
 import 'package:socks5_proxy/socks_server.dart';
 
 StreamTransformer<Uint8List, Uint8List> printer(String prefix) =>
-    StreamTransformer<Uint8List, Uint8List>.fromHandlers(
-      handleData: (data, sink) {
-        print(prefix);
-        print(data);
-        sink.add(data);
-      },
-    );
+  StreamTransformer<Uint8List, Uint8List>.fromHandlers(
+    handleData: (data, sink) {
+      print(prefix);
+      print(data);
+      sink.add(data);
+    },
+  );
 
 void main() {
   // Create server instance
@@ -21,7 +21,7 @@ void main() {
   proxy.connections.listen((connection) async {
     if (connection is TcpConnection) {
       final target = await connection.accept(connect: true);
-      if (target == null) 
+      if (target == null)
         return;
 
       // "Link" streams

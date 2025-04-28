@@ -1,5 +1,5 @@
 /// Exceptions this packet can throw.
-library exceptions;
+library;
 
 export 'src/exceptions/byte_reader_exception.dart';
 export 'src/exceptions/client/connection_closed_exception.dart';
