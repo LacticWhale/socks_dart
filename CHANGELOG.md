@@ -1,3 +1,8 @@
+## 2.1.0
+
+- Added `bindSecure` method to `SocksServer`, used to create socks server behind SSL(TLS).
+- Added `SecurityContext` to `ProxySetting`, used to connect to socks servers behind SSL(TLS).
+
 ## 2.0.0
 
 - Added `close`, `closeAll`, and `stop` methods to `SocksServer`.
@@ -18,7 +23,7 @@
 
 ## 1.0.5+dev.2
 
-- Added `ByteReaderException` which is thrown then server closes connection with clinet without stating the reason. 
+- Added `ByteReaderException` which is thrown then server closes connection with clinet without stating the reason.
 - Added `lookup` argument to every place it can be relevant.
 
 

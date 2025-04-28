@@ -3,7 +3,7 @@
 /// {@canonicalFor connection.Connection}
 /// {@canonicalFor tcp_connection.TcpConnection}
 /// {@canonicalFor udp_connection.UdpConnection}
-library socks_server;
+library;
 
 export 'src/server/auth_handler.dart';
 export 'src/server/connection.dart';

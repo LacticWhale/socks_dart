@@ -5,13 +5,7 @@ import 'package:socks5_proxy/socks_server.dart';
 
 void main() {
   // Create server instance
-  final proxy = SocksServer(
-    connectionTransform: 
-      StreamTransformer.fromHandlers(
-        handleData: (socket, sink) async => 
-          sink.add(await SecureSocket.secureServer(socket, SecurityContext()/* Add certificate here */)),
-      ),
-    );
+  final proxy = SocksServer();
 
   // Listen to all tcp and udp connections
   proxy.connections.listen((connection) async {
@@ -21,6 +15,12 @@ void main() {
   }).onError(print);
 
   // Bind servers
-  unawaited(proxy.bind(InternetAddress.anyIPv4, 1080));
+  // Secured server.
+  unawaited(proxy.bindSecure(InternetAddress.anyIPv6, 1080, SecurityContext()
+    ..useCertificateChain('cert.pem')
+    ..usePrivateKey('key.pem'),
+    ),
+  );
+  // Unsecured server
   unawaited(proxy.bind(InternetAddress.anyIPv4, 1081));
 }

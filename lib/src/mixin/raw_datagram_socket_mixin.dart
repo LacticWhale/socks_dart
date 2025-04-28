@@ -29,11 +29,13 @@ mixin RawDatagramSocketMixin on StreamMixin<RawSocketEvent>
 
   @override
   NetworkInterface? get multicastInterface =>
+      //
       // ignore: deprecated_member_use
       rawDatagramSocket.multicastInterface;
 
   @override
   set multicastInterface(NetworkInterface? multicastInterface) =>
+      //
       // ignore: deprecated_member_use
       rawDatagramSocket.multicastInterface = multicastInterface;
 

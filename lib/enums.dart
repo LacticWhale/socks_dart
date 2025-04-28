@@ -1,5 +1,5 @@
 /// Contains some enums/classes with mapping for binary types for Socks.
-library enums;
+library;
 
 export 'src/enums/authentication_method.dart';
 export 'src/enums/command_reply_code.dart';
