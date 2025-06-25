@@ -194,8 +194,7 @@ class SocksSocket with StreamMixin<Uint8List>, SocketMixin, ByteReader {
         0x00, // Reserved
         addressType.byte,
         // Encoding address, if domain adding length at the beginning.
-        if (addressType == AddressType.domain) rawAddress.length,
-        ...rawAddress,
+        ...(addressType == AddressType.domain ? [rawAddress.length - 1, ...rawAddress.sublist(0, rawAddress.length - 1)] : rawAddress),
         // Encoding port as big endian short.
         (targetPort & 0xff00) >> 8, targetPort & 0x00ff,
       ]),
