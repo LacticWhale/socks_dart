@@ -1,3 +1,7 @@
+## 2.1.2
+
+- Fix unhandled exceptions from cancelled `HttpClient` connections.
+
 ## 2.1.1
 
 - Fix domain serialization issue (thx @sylvieon).
