@@ -49,14 +49,23 @@ class SocksTCPClient extends SocksSocket {
             onBadCertificate: onBadCertificate,
             keyLog: keyLog,
             supportedProtocols: supportedProtocols,
-          ), () async => (await secureClient).close().ignore(),);
+          ), () => _closeWhenConnected(secureClient),);
         }
 
-        // SocketConnectionTask implements ConnectionTask<Socket>
-        return ConnectionTask.fromSocket(client, 
-          () async => (await client).close().ignore(),);
+        return ConnectionTask.fromSocket(client,
+          () => _closeWhenConnected(client),);
       };
   }
+
+  /// Closes the socket produced by [socket] once the connection completes.
+  ///
+  /// Used as the cancel callback of a [ConnectionTask]. [HttpClient] invokes
+  /// it when a connection attempt times out or the client is closed while the
+  /// attempt is still pending, and discards its result. A connection that
+  /// subsequently fails therefore has no listener left for its error, so it is
+  /// swallowed here instead of surfacing as an unhandled exception.
+  static void _closeWhenConnected(Future<Socket> socket) =>
+    socket.then((socket) => socket.close().ignore(), onError: (_) {}).ignore();
 
   /// Connects proxy client to given [proxies] with exit point of [host]\:[port].
   static Future<SocksSocket> connect(
