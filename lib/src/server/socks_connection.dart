@@ -131,7 +131,9 @@ class SocksConnection with StreamMixin<Uint8List>, SocketMixin, ByteReader {
         add([
           0x05, // socks version
           message.byte, // response message
-        ]); // error here
+        ]);
+
+        await flush();
       }
     } finally {
       await close();
